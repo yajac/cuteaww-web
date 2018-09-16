@@ -55,9 +55,9 @@
         </div>
 
           <div class="card-deck">
-            <div class="col-sm-6 col-md-6 col-lg-4" v-for="(post, index) in posts" v-show="checkShow(post)">
+            <div class="col-sm-6 col-md-6 col-lg-4" v-for="(post, index) in posts">
 
-                  <b-card v-bind:img-src="post.thumbnail"
+                  <b-card v-bind:img-src="post.link | formatPostURL"
                           img-top
                           class="mb-2"
                           @click="updateSlide(index)"
@@ -70,10 +70,8 @@
                     </b-card-body>
                     <b-card-footer>
                       <div class="row">
-
-                          <small class="col text-muted"><a v-bind:href="post.id | formatURL" target="_blank">{{post.created | formatDate}}</a></small>
-                          <small class="col text-muted"><a v-bind:href="post.id | formatURL" target="_blank">From: {{post.author}}</a></small>
-
+                          <small class="col text-muted">+{{post.score}}</small>
+                          <small class="col text-muted">{{post.datetime | formatDate}}</small>
                       </div>
                     </b-card-footer>
 
@@ -91,7 +89,7 @@
                   v-model="value"
                   controls >
 
-                  <b-carousel-slide ref="carouselSlide" v-for ="(post, index) in posts" :key="post.id" v-bind:id="post.id" v-bind:img-src="post.url | formatPostURL">
+                  <b-carousel-slide ref="carouselSlide" v-for ="(post, index) in posts" :key="post.id" v-bind:id="post.id" v-bind:img-src="post.link | formatPostURL">
                   </b-carousel-slide>
                 </b-carousel>
 
