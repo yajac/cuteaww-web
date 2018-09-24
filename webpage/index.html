@@ -3,18 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Reddit Aww</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.0.0-rc.11/dist/bootstrap-vue.css"/>
-
     <link rel="stylesheet" href="css/cuteaww.css"/>
 
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.0.0-rc.11/dist/bootstrap-vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.0.0-rc.11/dist/bootstrap-vue.min.js"></script>
   </head>
 
   <body>
@@ -25,37 +23,38 @@
       <results-list inline-template>
         <div id="posts">
 
-          <div class="d-flex justify-content-center">
-              <div class="col-xs-4">
-                <b-form-checkbox-group v-model="selected"
-                                       buttons
-                                       button-variant="outline-primary"
-                                       size="lg"
-                                       name="buttons2"
-                                       :options="optionsCat">
-                </b-form-checkbox-group>
-
-                <b-form-checkbox-group v-model="selected"
-                                       buttons
-                                       button-variant="outline-primary"
-                                       size="lg"
-                                       name="buttons2"
-                                       :options="optionsDog">
-                </b-form-checkbox-group>
-
-                <b-form-checkbox-group v-model="selected"
-                                       buttons
-                                       button-variant="outline-primary"
-                                       size="lg"
-                                       name="buttons2"
-                                       :options="optionsAnimals">
-                </b-form-checkbox-group>
-
+          <div class="row ">
+              <div class="col-4">
+                <b-form-group label="Dogs">
+                  <b-form-checkbox-group v-model="selected"
+                                         stacked
+                                         name="buttons2"
+                                         :options="optionsDog">
+                  </b-form-checkbox-group>
+                </b-form-group>
+              </div>
+              <div class="col-4">
+                <b-form-group label="Cats">
+                  <b-form-checkbox-group v-model="selected"
+                                         stacked
+                                         name="buttons2"
+                                         :options="optionsCat">
+                  </b-form-checkbox-group>
+                </b-form-group>
+              </div>
+              <div class="col-4">
+                <b-form-group label="All Animals">
+                  <b-form-checkbox-group v-model="selected"
+                                         stacked
+                                         name="buttons2"
+                                         :options="optionsAnimals">
+                  </b-form-checkbox-group>
+                </b-form-group>
               </div>
         </div>
 
           <div class="card-deck">
-            <div class="col-sm-6 col-md-6 col-lg-4" v-for="(post, index) in posts">
+            <div class="col-sm-6 col-md-6 col-lg-4" v-for="(post, index) in posts" v-show="checkShow(post)">
 
                   <b-card v-bind:img-src="post.link | formatPostURL"
                           img-top
@@ -68,10 +67,15 @@
                         {{post.title}}
                       </div>
                     </b-card-body>
+
                     <b-card-footer>
                       <div class="row">
-                          <small class="col text-muted">+{{post.score}}</small>
-                          <small class="col text-muted">{{post.datetime | formatDate}}</small>
+                          <a v-bind:href="post.id | formatImgurURL" target="_blank">
+                            <small class="col text-muted">+{{post.score}}</small>
+                          </a>
+                          <a v-bind:href="post.id | formatImgurURL" target="_blank">
+                             <small class="col text-muted">{{post.datetime | formatDate}}</small>
+                          </a>
                       </div>
                     </b-card-footer>
 
@@ -81,7 +85,7 @@
             </div>
 
             <div>
-              <b-modal id="modal1" ref="modal1" size="lg" :hide-footer="true" :hide-header="true">
+              <b-modal id="modal1" ref="modal1" size="lg" :hide-footer="true" >
 
                 <b-carousel id="carousel1"
                   :interval="0"
@@ -89,13 +93,13 @@
                   v-model="value"
                   controls >
 
-                  <b-carousel-slide ref="carouselSlide" v-for ="(post, index) in posts" :key="post.id" v-bind:id="post.id" v-bind:img-src="post.link | formatPostURL">
+                  <b-carousel-slide ref="carouselSlide" v-for ="(post, index) in posts" :key="post.id" v-bind:id="post.id" v-show="checkShow(post)">
+                      <img slot="img" class="d-block img-fluid w-100" v-bind:src="post.link | formatPostURL">
                   </b-carousel-slide>
                 </b-carousel>
 
               </b-modal>
           </div>
-
 
         </div>
 
