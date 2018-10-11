@@ -29,7 +29,8 @@
                   <b-form-checkbox-group v-model="selected"
                                          stacked
                                          name="buttons2"
-                                         :options="optionsDog">
+                                         :options="optionsDog"
+                                         @change="sendEvent">
                   </b-form-checkbox-group>
                 </b-form-group>
               </div>
@@ -38,7 +39,8 @@
                   <b-form-checkbox-group v-model="selected"
                                          stacked
                                          name="buttons2"
-                                         :options="optionsCat">
+                                         :options="optionsCat"
+                                         @change="sendEvent">
                   </b-form-checkbox-group>
                 </b-form-group>
               </div>
@@ -47,7 +49,8 @@
                   <b-form-checkbox-group v-model="selected"
                                          stacked
                                          name="buttons2"
-                                         :options="optionsAnimals">
+                                         :options="optionsAnimals"
+                                         @change="sendEvent">
                   </b-form-checkbox-group>
                 </b-form-group>
               </div>
@@ -56,11 +59,10 @@
           <div class="card-deck">
             <div class="col-sm-6 col-md-6 col-lg-4" v-for="(post, index) in posts" v-show="checkShow(post)">
 
-                  <b-card v-bind:img-src="post.link | formatPostURL"
-                          img-top
-                          class="mb-2"
-                          @click="updateSlide(index)"
-                          no-body >
+                <b-card class="mb-2"  @click="updateSlide(index)" no-body >
+                    <b-card-header>
+                      <b-img-lazy class="d-block img-fluid w-100" v-bind:src="post.link | formatPostURL"/>
+                    </b-card-header>
 
                     <b-card-body>
                       <div class="card-text">
@@ -95,6 +97,7 @@
 
                   <b-carousel-slide ref="carouselSlide" v-for ="(post, index) in posts" :key="post.id" v-bind:id="post.id" v-show="checkShow(post)">
                       <img slot="img" class="d-block img-fluid w-100" v-bind:src="post.link | formatPostURL">
+                      <!-- <b-img-lazy slot="img" class="d-block img-fluid w-100" v-bind:src="post.link | formatPostURL" center/> -->
                   </b-carousel-slide>
                 </b-carousel>
 
